@@ -27,10 +27,22 @@ async function run() {
   try {
     await client.connect();
    
-      
-      app.get('/hh', async (req, res) => {
-          res.send('this is inner in mongoBody this hwlo ')
+      const dataCollaction = client.db('toysPark').collection('toys');
+
+
+
+      app.post('/toys', async (req, res) => {  
+        const catchData = req.body;
+        const result = await dataCollaction.insertOne(catchData)
+        res.send(result); 
       })
+
+    app.get('/toys', async (req, res) => {
+      const data = dataCollaction.find()
+      const result = await data.toArray()
+      res.send(result)
+    })
+       
     
   } finally {
     
