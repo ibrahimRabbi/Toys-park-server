@@ -53,6 +53,28 @@ async function run() {
       res.send(getOneData)
     })
 
+    app.put('/update/:id', async (req, res) => {
+      const dataobj = req.body;
+      console.log(dataobj)
+      const id = req.params.id;
+       
+      const filter = { _id: new ObjectId(id) }; 
+      const options = { upsert: true }; 
+      const updateData = {
+        $set: {
+          toyName: dataobj.toyName,
+          price: dataobj.price,
+          photo: dataobj.photo,
+          category: dataobj.category,
+          stock: dataobj.stock,
+          rating: dataobj.rating,
+          description : dataobj.description
+        },
+      };
+      const result = await dataCollaction.updateOne(filter, updateData, options)
+      res.send(result)
+    })
+
 
     app.delete('/toys/:id', async (req, res) => {
       const id = req.params.id;
