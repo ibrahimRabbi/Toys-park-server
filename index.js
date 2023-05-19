@@ -34,6 +34,7 @@ async function run() {
       res.send(result);
     });
 
+
     app.get("/toys", async (req, res) => {
       let query = {};
       if (req.query?.email) {
@@ -43,6 +44,15 @@ async function run() {
       const result = await userData.toArray();
       res.send(result);
     });
+
+
+    app.get('/toys/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const getOneData = await dataCollaction.findOne(query)
+      res.send(getOneData)
+    })
+
 
     app.delete('/toys/:id', async (req, res) => {
       const id = req.params.id;
