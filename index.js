@@ -45,6 +45,13 @@ async function run() {
       res.send(result);
     });
 
+    app.get('/category/:categoryName', async (req, res) => {
+      const categoryName = req.params.categoryName
+      const data = await dataCollaction.find().toArray()  
+      const categoryData = data.filter(v => v.category == categoryName)
+      res.send(categoryData)
+    })
+
 
     app.get('/toys/:id', async (req, res) => {
       const id = req.params.id;
@@ -55,7 +62,6 @@ async function run() {
 
     app.put('/update/:id', async (req, res) => {
       const dataobj = req.body;
-      console.log(dataobj)
       const id = req.params.id;
        
       const filter = { _id: new ObjectId(id) }; 
