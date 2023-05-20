@@ -25,7 +25,6 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-
     const dataCollaction = client.db("toysPark").collection("toys");
 
     app.post("/toys", async (req, res) => {
@@ -40,7 +39,7 @@ async function run() {
       if (req.query?.email) {
         query = { email: req.query.email };
       }
-      const userData = dataCollaction.find(query);
+      const userData = dataCollaction.find(query).limit(20);
       const result = await userData.toArray();
       res.send(result);
     });
