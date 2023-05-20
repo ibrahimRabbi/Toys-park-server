@@ -33,17 +33,25 @@ async function run() {
       res.send(result);
     });
 
-
+//query and all data api
     app.get("/toys", async (req, res) => {
       let query = {};
       if (req.query?.email) {
         query = { email: req.query.email };
       }
-      const userData = dataCollaction.find(query).limit(20);
+      const userData = dataCollaction.find(query);
       const result = await userData.toArray();
       res.send(result);
     });
 
+//limit 20 data api
+    app.get("/toyslimit", async (req, res) => {
+      const userData = dataCollaction.find().limit(20);
+      const result = await userData.toArray();
+      res.send(result);
+    });
+
+//category wise data get api
     app.get('/category/:categoryName', async (req, res) => {
       const categoryName = req.params.categoryName
       const data = await dataCollaction.find().toArray()  
