@@ -38,10 +38,15 @@ async function run() {
 //query and all data get api using email query params
     app.get("/toys", async (req, res) => {
       let query = {};
+      let sort = {};
+      
       if (req.query?.email) {
         query = { email: req.query.email };
       }
-      const userData = dataCollaction.find(query);
+      if (req.query?.sort) {
+        sort = { price: req.query.sort };
+      }
+      const userData = dataCollaction.find(query).sort(sort);
       const result = await userData.toArray();
       res.send(result);
     });
