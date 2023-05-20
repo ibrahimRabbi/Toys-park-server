@@ -35,8 +35,9 @@ async function run() {
       res.send(result);
     });
 
-//query and all data get api using email query params
+//query and all data and sorting data get api using email query params
     app.get("/toys", async (req, res) => {
+
       let query = {};
       let sort = {};
       
@@ -46,9 +47,11 @@ async function run() {
       if (req.query?.sort) {
         sort = { price: req.query.sort };
       }
+
       const userData = dataCollaction.find(query).sort(sort);
       const result = await userData.toArray();
       res.send(result);
+
     });
 
 //limit 20 data get api
@@ -63,6 +66,14 @@ async function run() {
       const categoryName = req.params.categoryName
       const data = await dataCollaction.find().toArray()  
       const categoryData = data.filter(v => v.category == categoryName)
+      res.send(categoryData)
+    })
+
+//name wise data get api for  search faild
+    app.get('/search/:toyName', async (req, res) => {
+      const toyName = req.params.toyName
+      const data = await dataCollaction.find().toArray()  
+      const categoryData = data.filter(v => v.toyName == toyName)
       res.send(categoryData)
     })
 
