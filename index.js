@@ -35,44 +35,40 @@ async function run() {
       res.send(result);
     });
 
-    //query and all data and sorting data get api using email query params
+    //get oparations and some oparation of query parameter
     app.get("/toys", async (req, res) => {
       let query = {};
       let sort = {};
 
+      //email wise data get
       if (req.query?.email) {
         query = { email: req.query.email };
       }
+      //category wise data get
+      if (req.query?.category) {
+        query = {category : req.query.category}
+      }
+      //text wise data get for search faild
+      if (req.query?.search) {
+        query= {toyName : {$regex:req.query.search,$options :'i'}}
+      }
+      //data sort
       if (req.query?.sort) {
         sort = { price: req.query.sort };
       }
-
       const userData = dataCollaction.find(query).sort(sort);
       const result = await userData.toArray();
       res.send(result);
     });
+
+
+
 
     //limit 20 data get api
     app.get("/toyslimit", async (req, res) => {
       const userData = dataCollaction.find().limit(20);
       const result = await userData.toArray();
       res.send(result);
-    });
-
-    //category wise data get api
-    app.get("/category/:categoryName", async (req, res) => {
-      const categoryName = req.params.categoryName;
-      const data = await dataCollaction.find().toArray();
-      const categoryData = data.filter((v) => v.category == categoryName);
-      res.send(categoryData);
-    });
-
-    //name wise data get api for  search faild
-    app.get("/search/:toyName", async (req, res) => {
-      const toyName = req.params.toyName;
-      const data = await dataCollaction.find().toArray();
-      const categoryData = data.filter((v) => v.toyName == toyName);
-      res.send(categoryData);
     });
 
     // one data get api using id
@@ -134,3 +130,14 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log("server is running on port", port);
 });
+
+
+
+ //name wise data get api for  search faild
+ 
+    // app.get("/search/:toyName", async (req, res) => {
+    //   const toyName = req.params.toyName;
+    //   const data = await dataCollaction.find().toArray();
+    //   const categoryData = data.filter((v) => v.toyName == toyName);
+    //   res.send(categoryData);
+    // });
